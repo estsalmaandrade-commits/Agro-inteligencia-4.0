@@ -15,3 +15,6 @@ Sistema automatizado de riego y monitoreo ambiental (humedad, CO2 y temperatura)
   1. Integrar y calibrar los sensores YL-69, DHT11 y MQ-7.
   2. Programar la lógica de control en Arduino UNO y ESP-32.
   3. Estructurar la documentación y código colaborativamente en GitHub.
+
+## Presupuesto (BOM)
+* **Costo Total del Prototipo:** $170.000 COP
