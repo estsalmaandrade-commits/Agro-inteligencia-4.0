@@ -1,0 +1,154 @@
+#include <Wire.h>
+#include <Adafruit_GFX.h>
+#include <Adafruit_SSD1306.h>
+#include <DHT.h>
+
+#define ANCHO 128
+#define ALTO 64
+#define OLED_RESET -1
+#define OLED_DIR 0x3C
+
+#define PIN_DHT 4
+#define TIPO_DHT DHT11
+#define PIN_HUMEDAD_SUELO 34
+#define LED_ROJO 18
+#define LED_VERDE 33
+#define BUZZER 25
+#define RELE 23
+
+#define UMBRAL_HUMEDAD 18
+
+Adafruit_SSD1306 display(ANCHO, ALTO, &Wire, OLED_RESET);
+DHT dht(PIN_DHT, TIPO_DHT);
+
+bool estadoAnteriorSeco = false;
+
+void setup() {
+  Serial.begin(115200);
+
+  pinMode(PIN_HUMEDAD_SUELO, INPUT);
+  pinMode(LED_ROJO, OUTPUT);
+  pinMode(LED_VERDE, OUTPUT);
+  pinMode(BUZZER, OUTPUT);
+  pinMode(RELE, OUTPUT);
+
+  digitalWrite(LED_ROJO, LOW);
+  digitalWrite(LED_VERDE, LOW);
+  digitalWrite(BUZZER, LOW);
+  digitalWrite(RELE, HIGH);
+
+  Wire.begin(21, 22);
+
+  if (!display.begin(SSD1306_SWITCHCAPVCC, OLED_DIR)) {
+    Serial.println("Error al iniciar la pantalla OLED");
+    while (true) {
+      delay(100);
+    }
+  }
+
+  dht.begin();
+
+  display.clearDisplay();
+  display.setTextColor(SSD1306_WHITE);
+  display.setTextSize(1);
+  display.setCursor(0, 0);
+  display.println("Sistema de riego");
+  display.println("Iniciando...");
+  display.display();
+
+  delay(2000);
+}
+
+void loop() {
+  int lecturaSuelo = analogRead(PIN_HUMEDAD_SUELO);
+
+  int humedadSuelo = map(lecturaSuelo, 4095, 1200, 0, 100);
+  humedadSuelo = constrain(humedadSuelo, 0, 100);
+
+  float humedadAire = dht.readHumidity();
+  float temperatura = dht.readTemperature();
+
+  bool sueloSeco = humedadSuelo < UMBRAL_HUMEDAD;
+
+  if (sueloSeco) {
+    digitalWrite(LED_ROJO, HIGH);
+    digitalWrite(LED_VERDE, LOW);
+    digitalWrite(RELE, LOW);
+    digitalWrite(BUZZER, LOW);
+  } else {
+    digitalWrite(LED_ROJO, LOW);
+    digitalWrite(LED_VERDE, HIGH);
+    digitalWrite(RELE, HIGH);
+
+    if (estadoAnteriorSeco) {
+      digitalWrite(BUZZER, HIGH);
+      delay(200);
+      digitalWrite(BUZZER, LOW);
+    }
+  }
+
+  estadoAnteriorSeco = sueloSeco;
+
+  display.clearDisplay();
+  display.setTextSize(1);
+  display.setCursor(0, 0);
+  display.println("MONITOR DE PLANTA");
+  display.println("---------------------");
+
+  display.print("Suelo: ");
+  display.print(humedadSuelo);
+  display.println("%");
+
+  if (isnan(humedadAire)) {
+    display.println("Aire: Error");
+  } else {
+    display.print("Aire: ");
+    display.print(humedadAire, 1);
+    display.println("%");
+  }
+
+  if (isnan(temperatura)) {
+    display.println("Temp: Error");
+  } else {
+    display.print("Temp: ");
+    display.print(temperatura, 1);
+    display.println(" C");
+  }
+
+  display.println("---------------------");
+
+  if (sueloSeco) {
+    display.println("Estado: REGANDO");
+  } else {
+    display.println("Estado: HUMEDO / OK");
+  }
+
+  display.display();
+
+  Serial.println("MONITOR DE PLANTA");
+  Serial.print("Humedad del suelo: ");
+  Serial.print(humedadSuelo);
+  Serial.println("%");
+
+  Serial.print("Humedad del aire: ");
+  if (isnan(humedadAire)) {
+    Serial.println("Error");
+  } else {
+    Serial.print(humedadAire);
+    Serial.println("%");
+  }
+
+  Serial.print("Temperatura: ");
+  if (isnan(temperatura)) {
+    Serial.println("Error");
+  } else {
+    Serial.print(temperatura);
+    Serial.println(" C");
+  }
+
+  Serial.print("Estado: ");
+  Serial.println(sueloSeco ? "REGANDO" : "HUMEDO / OK");
+  Serial.println("---------------------");
+
+  delay(2000);
+}
