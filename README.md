@@ -8,3 +8,10 @@ Sistema automatizado de riego y monitoreo ambiental (humedad, CO2 y temperatura)
 * Shara Valeria García Navarro – Líder / PM
 * Michael Leonardo Torrealba Torres – Diseñador / UX
 * Saray Daniela Villareal Zúñiga – Investigador
+
+## Objetivos
+* **General:** Diseñar y construir el prototipo Agro-Inteligencia 4.0 para automatizar el riego y monitorear variables ambientales.
+* **Específicos:**
+  1. Integrar y calibrar los sensores YL-69, DHT11 y MQ-7.
+  2. Programar la lógica de control en Arduino UNO y ESP-32.
+  3. Estructurar la documentación y código colaborativamente en GitHub.
