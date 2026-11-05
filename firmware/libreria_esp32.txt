@@ -1,0 +1,5 @@
+Librerías requeridas para el firmware en ESP32:
+- Adafruit SSD1306
+- Adafruit GFX Library
+- DHT sensor library by Adafruit
+- Wire (incluida en el core de ESP32)
