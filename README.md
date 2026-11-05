@@ -18,3 +18,10 @@ Sistema automatizado de riego y monitoreo ambiental (humedad, CO2 y temperatura)
 
 ## Presupuesto (BOM)
 * **Costo Total del Prototipo:** $170.000 COP
+
+## Tabla de Conexiones del Circuito
+* Sensor YL-69 (Humedad) -> Pin A0
+* Sensor DHT11 (Temperatura) -> Pin D4
+* Sensor MQ-7 (CO2) -> Pin A1
+* Display OLED -> Bus I2C
+* Micro bomba de agua -> Pin D2
