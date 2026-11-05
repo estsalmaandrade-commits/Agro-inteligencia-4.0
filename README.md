@@ -25,3 +25,9 @@ Sistema automatizado de riego y monitoreo ambiental (humedad, CO2 y temperatura)
 * Sensor MQ-7 (CO2) -> Pin A1
 * Display OLED -> Bus I2C
 * Micro bomba de agua -> Pin D2
+
+## Instrucciones de Compilación y Carga (ESP32)
+1. Abrir el IDE de Arduino y seleccionar la tarjeta ESP32 Dev Module.
+2. Instalar las librerías DHT sensor library, Adafruit SSD1306 y Adafruit GFX.
+3. Seleccionar el puerto COM asignado al ESP32.
+4. Compilar y cargar el firmware.
