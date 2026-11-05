@@ -1,0 +1,8 @@
+==================================================
+FICHA TÉCNICA - SENSOR DE HUMEDAD DE SUELO YL-69 / HL-69
+==================================================
+* Voltaje de operación: 3.3V - 5V DC
+* Señal de salida: Dual (Analógica A0 / Digital D0)
+* Comparador: LM393
+* Dimensiones de la sonda: 60mm x 20mm
+* Uso en el proyecto: Medición de la humedad en la tierra para activar el riego automático.
